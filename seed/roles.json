@@ -1,0 +1,4 @@
+[
+  {"id": 1, "name": "Senior ML Engineer", "family": "Engineering", "level": "Senior", "description": "Build and productionize ML systems"},
+  {"id": 2, "name": "Backend Engineer", "family": "Engineering", "level": "Mid", "description": "Develop scalable APIs and services"}
+]

@@ -1,0 +1,10 @@
+[
+  {"role_id": 1, "skill_id": 1, "required_level": 4, "weight": 1.2, "must_have": true},
+  {"role_id": 1, "skill_id": 3, "required_level": 4, "weight": 1.5, "must_have": true},
+  {"role_id": 1, "skill_id": 4, "required_level": 3.5, "weight": 1.4, "must_have": true},
+  {"role_id": 1, "skill_id": 7, "required_level": 3, "weight": 1.0, "must_have": false},
+  {"role_id": 2, "skill_id": 1, "required_level": 4, "weight": 1.4, "must_have": true},
+  {"role_id": 2, "skill_id": 2, "required_level": 4, "weight": 1.2, "must_have": true},
+  {"role_id": 2, "skill_id": 5, "required_level": 3, "weight": 1.0, "must_have": false},
+  {"role_id": 2, "skill_id": 6, "required_level": 3, "weight": 0.8, "must_have": false}
+]
