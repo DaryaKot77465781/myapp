@@ -1,0 +1,302 @@
+[
+  {
+    "id": 1,
+    "title": "Learning Resource 1",
+    "provider": "Coursera",
+    "url": "https://example.com/course/1",
+    "skill_tags": [
+      "Python",
+      "Machine Learning"
+    ],
+    "level": "intermediate",
+    "duration": "6h",
+    "language": "en",
+    "price_type": "free",
+    "content_text": "Resource 1 covers practical projects for ML and backend skills."
+  },
+  {
+    "id": 2,
+    "title": "Learning Resource 2",
+    "provider": "YouTube",
+    "url": "https://example.com/course/2",
+    "skill_tags": [
+      "Python",
+      "Machine Learning"
+    ],
+    "level": "intermediate",
+    "duration": "6h",
+    "language": "en",
+    "price_type": "paid",
+    "content_text": "Resource 2 covers practical projects for ML and backend skills."
+  },
+  {
+    "id": 3,
+    "title": "Learning Resource 3",
+    "provider": "Coursera",
+    "url": "https://example.com/course/3",
+    "skill_tags": [
+      "SQL",
+      "FastAPI"
+    ],
+    "level": "intermediate",
+    "duration": "6h",
+    "language": "en",
+    "price_type": "free",
+    "content_text": "Resource 3 covers practical projects for ML and backend skills."
+  },
+  {
+    "id": 4,
+    "title": "Learning Resource 4",
+    "provider": "YouTube",
+    "url": "https://example.com/course/4",
+    "skill_tags": [
+      "Python",
+      "Machine Learning"
+    ],
+    "level": "intermediate",
+    "duration": "6h",
+    "language": "en",
+    "price_type": "paid",
+    "content_text": "Resource 4 covers practical projects for ML and backend skills."
+  },
+  {
+    "id": 5,
+    "title": "Learning Resource 5",
+    "provider": "Coursera",
+    "url": "https://example.com/course/5",
+    "skill_tags": [
+      "Python",
+      "Machine Learning"
+    ],
+    "level": "intermediate",
+    "duration": "6h",
+    "language": "en",
+    "price_type": "free",
+    "content_text": "Resource 5 covers practical projects for ML and backend skills."
+  },
+  {
+    "id": 6,
+    "title": "Learning Resource 6",
+    "provider": "YouTube",
+    "url": "https://example.com/course/6",
+    "skill_tags": [
+      "SQL",
+      "FastAPI"
+    ],
+    "level": "intermediate",
+    "duration": "6h",
+    "language": "en",
+    "price_type": "paid",
+    "content_text": "Resource 6 covers practical projects for ML and backend skills."
+  },
+  {
+    "id": 7,
+    "title": "Learning Resource 7",
+    "provider": "Coursera",
+    "url": "https://example.com/course/7",
+    "skill_tags": [
+      "Python",
+      "Machine Learning"
+    ],
+    "level": "intermediate",
+    "duration": "6h",
+    "language": "en",
+    "price_type": "free",
+    "content_text": "Resource 7 covers practical projects for ML and backend skills."
+  },
+  {
+    "id": 8,
+    "title": "Learning Resource 8",
+    "provider": "YouTube",
+    "url": "https://example.com/course/8",
+    "skill_tags": [
+      "Python",
+      "Machine Learning"
+    ],
+    "level": "intermediate",
+    "duration": "6h",
+    "language": "en",
+    "price_type": "paid",
+    "content_text": "Resource 8 covers practical projects for ML and backend skills."
+  },
+  {
+    "id": 9,
+    "title": "Learning Resource 9",
+    "provider": "Coursera",
+    "url": "https://example.com/course/9",
+    "skill_tags": [
+      "SQL",
+      "FastAPI"
+    ],
+    "level": "intermediate",
+    "duration": "6h",
+    "language": "en",
+    "price_type": "free",
+    "content_text": "Resource 9 covers practical projects for ML and backend skills."
+  },
+  {
+    "id": 10,
+    "title": "Learning Resource 10",
+    "provider": "YouTube",
+    "url": "https://example.com/course/10",
+    "skill_tags": [
+      "Python",
+      "Machine Learning"
+    ],
+    "level": "intermediate",
+    "duration": "6h",
+    "language": "en",
+    "price_type": "paid",
+    "content_text": "Resource 10 covers practical projects for ML and backend skills."
+  },
+  {
+    "id": 11,
+    "title": "Learning Resource 11",
+    "provider": "Coursera",
+    "url": "https://example.com/course/11",
+    "skill_tags": [
+      "Python",
+      "Machine Learning"
+    ],
+    "level": "intermediate",
+    "duration": "6h",
+    "language": "en",
+    "price_type": "free",
+    "content_text": "Resource 11 covers practical projects for ML and backend skills."
+  },
+  {
+    "id": 12,
+    "title": "Learning Resource 12",
+    "provider": "YouTube",
+    "url": "https://example.com/course/12",
+    "skill_tags": [
+      "SQL",
+      "FastAPI"
+    ],
+    "level": "intermediate",
+    "duration": "6h",
+    "language": "en",
+    "price_type": "paid",
+    "content_text": "Resource 12 covers practical projects for ML and backend skills."
+  },
+  {
+    "id": 13,
+    "title": "Learning Resource 13",
+    "provider": "Coursera",
+    "url": "https://example.com/course/13",
+    "skill_tags": [
+      "Python",
+      "Machine Learning"
+    ],
+    "level": "intermediate",
+    "duration": "6h",
+    "language": "en",
+    "price_type": "free",
+    "content_text": "Resource 13 covers practical projects for ML and backend skills."
+  },
+  {
+    "id": 14,
+    "title": "Learning Resource 14",
+    "provider": "YouTube",
+    "url": "https://example.com/course/14",
+    "skill_tags": [
+      "Python",
+      "Machine Learning"
+    ],
+    "level": "intermediate",
+    "duration": "6h",
+    "language": "en",
+    "price_type": "paid",
+    "content_text": "Resource 14 covers practical projects for ML and backend skills."
+  },
+  {
+    "id": 15,
+    "title": "Learning Resource 15",
+    "provider": "Coursera",
+    "url": "https://example.com/course/15",
+    "skill_tags": [
+      "SQL",
+      "FastAPI"
+    ],
+    "level": "intermediate",
+    "duration": "6h",
+    "language": "en",
+    "price_type": "free",
+    "content_text": "Resource 15 covers practical projects for ML and backend skills."
+  },
+  {
+    "id": 16,
+    "title": "Learning Resource 16",
+    "provider": "YouTube",
+    "url": "https://example.com/course/16",
+    "skill_tags": [
+      "Python",
+      "Machine Learning"
+    ],
+    "level": "intermediate",
+    "duration": "6h",
+    "language": "en",
+    "price_type": "paid",
+    "content_text": "Resource 16 covers practical projects for ML and backend skills."
+  },
+  {
+    "id": 17,
+    "title": "Learning Resource 17",
+    "provider": "Coursera",
+    "url": "https://example.com/course/17",
+    "skill_tags": [
+      "Python",
+      "Machine Learning"
+    ],
+    "level": "intermediate",
+    "duration": "6h",
+    "language": "en",
+    "price_type": "free",
+    "content_text": "Resource 17 covers practical projects for ML and backend skills."
+  },
+  {
+    "id": 18,
+    "title": "Learning Resource 18",
+    "provider": "YouTube",
+    "url": "https://example.com/course/18",
+    "skill_tags": [
+      "SQL",
+      "FastAPI"
+    ],
+    "level": "intermediate",
+    "duration": "6h",
+    "language": "en",
+    "price_type": "paid",
+    "content_text": "Resource 18 covers practical projects for ML and backend skills."
+  },
+  {
+    "id": 19,
+    "title": "Learning Resource 19",
+    "provider": "Coursera",
+    "url": "https://example.com/course/19",
+    "skill_tags": [
+      "Python",
+      "Machine Learning"
+    ],
+    "level": "intermediate",
+    "duration": "6h",
+    "language": "en",
+    "price_type": "free",
+    "content_text": "Resource 19 covers practical projects for ML and backend skills."
+  },
+  {
+    "id": 20,
+    "title": "Learning Resource 20",
+    "provider": "YouTube",
+    "url": "https://example.com/course/20",
+    "skill_tags": [
+      "Python",
+      "Machine Learning"
+    ],
+    "level": "intermediate",
+    "duration": "6h",
+    "language": "en",
+    "price_type": "paid",
+    "content_text": "Resource 20 covers practical projects for ML and backend skills."
+  }
+]

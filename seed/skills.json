@@ -1,0 +1,10 @@
+[
+  {"id": 1, "canonical_name": "Python", "taxonomy": "internal", "external_id": "ESCO:python", "aliases": ["python3", "py"]},
+  {"id": 2, "canonical_name": "SQL", "taxonomy": "internal", "external_id": "ESCO:sql", "aliases": ["postgresql", "mysql"]},
+  {"id": 3, "canonical_name": "Machine Learning", "taxonomy": "internal", "external_id": "ESCO:ml", "aliases": ["ml", "modeling"]},
+  {"id": 4, "canonical_name": "MLOps", "taxonomy": "internal", "external_id": "ESCO:mlops", "aliases": ["model deployment"]},
+  {"id": 5, "canonical_name": "FastAPI", "taxonomy": "internal", "external_id": null, "aliases": ["api development"]},
+  {"id": 6, "canonical_name": "Docker", "taxonomy": "internal", "external_id": null, "aliases": ["containers"]},
+  {"id": 7, "canonical_name": "System Design", "taxonomy": "internal", "external_id": null, "aliases": ["architecture"]},
+  {"id": 8, "canonical_name": "Data Engineering", "taxonomy": "internal", "external_id": null, "aliases": ["etl", "pipelines"]}
+]
