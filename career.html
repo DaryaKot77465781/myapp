@@ -1,0 +1,1754 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Карьерный планировщик — План развития</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      :root {
+        --clr-bg: #f5f7fa;
+        --clr-surface: #ffffff;
+        --clr-primary: #4f46e5;
+        --clr-primary-light: #818cf8;
+        --clr-primary-bg: #eef2ff;
+        --clr-accent: #10b981;
+        --clr-accent-bg: #ecfdf5;
+        --clr-warn: #f59e0b;
+        --clr-warn-bg: #fffbeb;
+        --clr-danger: #ef4444;
+        --clr-text: #1e293b;
+        --clr-muted: #64748b;
+        --clr-border: #e2e8f0;
+        --radius: 12px;
+        --shadow: 0 1px 3px rgba(0,0,0,.08), 0 4px 12px rgba(0,0,0,.04);
+      }
+
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        background: var(--clr-bg);
+        color: var(--clr-text);
+        line-height: 1.6;
+        min-height: 100vh;
+      }
+
+      .app-header {
+        background: var(--clr-surface);
+        border-bottom: 1px solid var(--clr-border);
+        padding: 16px 24px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .app-header .logo {
+        width: 36px; height: 36px;
+        background: var(--clr-primary);
+        border-radius: 8px;
+        display: flex; align-items: center; justify-content: center;
+        color: #fff; font-weight: 700; font-size: 18px;
+      }
+      .app-header h1 { font-size: 18px; font-weight: 600; }
+      .app-header .back-link {
+        margin-left: auto;
+        color: var(--clr-muted);
+        text-decoration: none;
+        font-size: 14px;
+      }
+      .app-header .back-link:hover { color: var(--clr-primary); }
+
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 32px 20px 64px;
+      }
+
+      /* Stepper */
+      .stepper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0;
+        margin-bottom: 32px;
+      }
+      .step-item {
+        display: flex; align-items: center; gap: 8px;
+        font-size: 13px; font-weight: 500; color: var(--clr-muted);
+        white-space: nowrap;
+      }
+      .step-item.active { color: var(--clr-primary); }
+      .step-item.done { color: var(--clr-accent); }
+      .step-circle {
+        width: 28px; height: 28px;
+        border-radius: 50%;
+        border: 2px solid var(--clr-border);
+        display: flex; align-items: center; justify-content: center;
+        font-size: 13px; font-weight: 600;
+        flex-shrink: 0;
+      }
+      .step-item.active .step-circle {
+        border-color: var(--clr-primary);
+        background: var(--clr-primary);
+        color: #fff;
+      }
+      .step-item.done .step-circle {
+        border-color: var(--clr-accent);
+        background: var(--clr-accent);
+        color: #fff;
+      }
+      .step-line {
+        width: 40px; height: 2px;
+        background: var(--clr-border);
+        margin: 0 8px;
+        flex-shrink: 0;
+      }
+      .step-line.done { background: var(--clr-accent); }
+
+      /* Cards */
+      .card {
+        background: var(--clr-surface);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        padding: 28px;
+        margin-bottom: 20px;
+      }
+      .card h2 {
+        font-size: 20px; font-weight: 600; margin-bottom: 6px;
+      }
+      .card .subtitle {
+        color: var(--clr-muted); font-size: 14px; margin-bottom: 20px;
+      }
+
+      /* Form elements */
+      label.field-label {
+        display: block;
+        font-size: 13px; font-weight: 600; color: var(--clr-muted);
+        margin-bottom: 4px; text-transform: uppercase; letter-spacing: .5px;
+      }
+      select, input[type="text"], textarea {
+        width: 100%;
+        padding: 10px 14px;
+        font-size: 15px;
+        border: 1.5px solid var(--clr-border);
+        border-radius: 8px;
+        background: var(--clr-surface);
+        color: var(--clr-text);
+        transition: border-color .2s;
+        font-family: inherit;
+      }
+      select:focus, input[type="text"]:focus, textarea:focus {
+        outline: none;
+        border-color: var(--clr-primary);
+        box-shadow: 0 0 0 3px var(--clr-primary-bg);
+      }
+      textarea { resize: vertical; min-height: 140px; }
+      .field-group { margin-bottom: 16px; }
+
+      /* Method toggle */
+      .method-toggle {
+        display: flex; gap: 8px; margin-bottom: 24px;
+      }
+      .method-btn {
+        flex: 1;
+        padding: 12px 16px;
+        border: 2px solid var(--clr-border);
+        border-radius: 10px;
+        background: var(--clr-surface);
+        cursor: pointer;
+        text-align: center;
+        font-size: 14px;
+        font-weight: 500;
+        transition: all .2s;
+      }
+      .method-btn:hover { border-color: var(--clr-primary-light); }
+      .method-btn.active {
+        border-color: var(--clr-primary);
+        background: var(--clr-primary-bg);
+        color: var(--clr-primary);
+      }
+      .method-btn .icon { font-size: 22px; display: block; margin-bottom: 4px; }
+
+      /* Skills list */
+      .skills-list { list-style: none; }
+      .skill-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 0;
+        border-bottom: 1px solid var(--clr-border);
+      }
+      .skill-row:last-child { border-bottom: none; }
+      .skill-name { flex: 1; font-size: 15px; }
+      .skill-level-btns { display: flex; gap: 4px; }
+      .skill-level-btns button {
+        width: 36px; height: 36px;
+        border-radius: 8px;
+        border: 1.5px solid var(--clr-border);
+        background: var(--clr-surface);
+        cursor: pointer;
+        font-size: 13px; font-weight: 600;
+        transition: all .15s;
+      }
+      .skill-level-btns button:hover {
+        border-color: var(--clr-primary-light);
+      }
+      .skill-level-btns button.active {
+        background: var(--clr-primary);
+        border-color: var(--clr-primary);
+        color: #fff;
+      }
+      .skill-remove {
+        width: 28px; height: 28px;
+        border: none; background: none;
+        color: var(--clr-muted);
+        cursor: pointer; font-size: 18px;
+        border-radius: 6px;
+      }
+      .skill-remove:hover { background: #fee2e2; color: var(--clr-danger); }
+
+      .add-skill-row {
+        display: flex; gap: 8px; margin-top: 12px;
+      }
+      .add-skill-row input { flex: 1; }
+      .add-skill-row button {
+        padding: 8px 16px;
+        background: var(--clr-primary-bg);
+        color: var(--clr-primary);
+        border: 1.5px solid var(--clr-primary);
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 14px;
+        white-space: nowrap;
+      }
+
+      /* Goal cards */
+      .goal-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+      .goal-card {
+        padding: 20px;
+        border: 2px solid var(--clr-border);
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all .2s;
+        display: flex;
+        align-items: flex-start;
+        gap: 14px;
+      }
+      .goal-card:hover { border-color: var(--clr-primary-light); background: var(--clr-primary-bg); }
+      .goal-card.selected {
+        border-color: var(--clr-primary);
+        background: var(--clr-primary-bg);
+      }
+      .goal-icon {
+        font-size: 28px; flex-shrink: 0; margin-top: 2px;
+      }
+      .goal-card h3 { font-size: 16px; margin-bottom: 4px; }
+      .goal-card p { font-size: 13px; color: var(--clr-muted); }
+
+      /* Target profession select for "change profession" goal */
+      .target-prof-box {
+        margin-top: 16px;
+        padding: 16px;
+        background: var(--clr-warn-bg);
+        border-radius: 10px;
+        display: none;
+      }
+      .target-prof-box.visible { display: block; }
+
+      /* Buttons */
+      .btn-row {
+        display: flex; justify-content: space-between; margin-top: 24px; gap: 12px;
+      }
+      .btn {
+        padding: 12px 28px;
+        border-radius: 10px;
+        font-size: 15px;
+        font-weight: 600;
+        border: none;
+        cursor: pointer;
+        transition: all .15s;
+      }
+      .btn-primary {
+        background: var(--clr-primary);
+        color: #fff;
+      }
+      .btn-primary:hover { background: #4338ca; }
+      .btn-primary:disabled { opacity: .5; cursor: not-allowed; }
+      .btn-secondary {
+        background: var(--clr-surface);
+        color: var(--clr-text);
+        border: 1.5px solid var(--clr-border);
+      }
+      .btn-secondary:hover { background: var(--clr-bg); }
+
+      /* Results */
+      .match-meter {
+        text-align: center;
+        padding: 28px 0 20px;
+      }
+      .match-circle {
+        width: 120px; height: 120px;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 32px;
+        font-weight: 700;
+        border: 6px solid var(--clr-border);
+        margin-bottom: 12px;
+        position: relative;
+      }
+      .match-circle.high { border-color: var(--clr-accent); color: var(--clr-accent); }
+      .match-circle.mid { border-color: var(--clr-warn); color: var(--clr-warn); }
+      .match-circle.low { border-color: var(--clr-danger); color: var(--clr-danger); }
+      .match-label { font-size: 14px; color: var(--clr-muted); }
+
+      .comparison-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 14px;
+        margin-top: 16px;
+      }
+      .comparison-table th {
+        text-align: left;
+        font-size: 12px; text-transform: uppercase;
+        letter-spacing: .5px;
+        color: var(--clr-muted);
+        padding: 8px 12px;
+        border-bottom: 2px solid var(--clr-border);
+      }
+      .comparison-table td {
+        padding: 10px 12px;
+        border-bottom: 1px solid var(--clr-border);
+      }
+      .lvl-badge {
+        display: inline-block;
+        padding: 2px 10px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+      }
+      .lvl-1 { background: #dbeafe; color: #1e40af; }
+      .lvl-2 { background: #fef3c7; color: #92400e; }
+      .lvl-3 { background: #d1fae5; color: #065f46; }
+      .lvl-0 { background: #f1f5f9; color: #94a3b8; }
+      .gap-tag {
+        display: inline-block;
+        padding: 2px 8px;
+        border-radius: 12px;
+        font-size: 11px; font-weight: 600;
+      }
+      .gap-ok { background: #d1fae5; color: #065f46; }
+      .gap-partial { background: #fef3c7; color: #92400e; }
+      .gap-missing { background: #fee2e2; color: #991b1b; }
+
+      /* Development plan */
+      .plan-section {
+        margin-top: 20px;
+      }
+      .plan-section h3 {
+        font-size: 16px;
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .plan-section h3 .plan-icon { font-size: 20px; }
+      .plan-item {
+        padding: 14px 16px;
+        background: var(--clr-bg);
+        border-radius: 8px;
+        margin-bottom: 8px;
+        font-size: 14px;
+      }
+      .plan-item strong { font-size: 14px; }
+      .plan-item p { margin-top: 4px; color: var(--clr-muted); font-size: 13px; }
+
+      .career-paths-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 12px;
+      }
+      .career-path-card {
+        border: 1.5px solid var(--clr-border);
+        border-radius: 10px;
+        padding: 16px;
+        cursor: pointer;
+        transition: all .2s;
+      }
+      .career-path-card:hover { border-color: var(--clr-primary); background: var(--clr-primary-bg); }
+      .career-path-card h4 { font-size: 14px; margin-bottom: 4px; }
+      .career-path-card .match-pct { font-size: 22px; font-weight: 700; color: var(--clr-primary); }
+      .career-path-card .match-note { font-size: 12px; color: var(--clr-muted); }
+
+      .parsed-skills-confirm {
+        background: var(--clr-accent-bg);
+        border-radius: 10px;
+        padding: 16px;
+        margin-top: 12px;
+      }
+      .parsed-skills-confirm h4 { font-size: 14px; margin-bottom: 8px; }
+
+      .tag {
+        display: inline-block;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 13px;
+        margin: 3px 4px 3px 0;
+        background: var(--clr-primary-bg);
+        color: var(--clr-primary);
+        font-weight: 500;
+      }
+
+      .hidden { display: none !important; }
+
+      @media (max-width: 600px) {
+        .stepper .step-text { display: none; }
+        .container { padding: 20px 12px 48px; }
+        .card { padding: 20px 16px; }
+        .skill-row { flex-wrap: wrap; gap: 8px; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app-header">
+      <div class="logo">K</div>
+      <h1>Карьерный планировщик</h1>
+      <a href="index.html" class="back-link">&#8592; Портфолио</a>
+    </div>
+
+    <div class="container">
+      <!-- Stepper -->
+      <div class="stepper" id="stepper">
+        <div class="step-item active" data-step="1">
+          <div class="step-circle">1</div>
+          <span class="step-text">Профиль</span>
+        </div>
+        <div class="step-line"></div>
+        <div class="step-item" data-step="2">
+          <div class="step-circle">2</div>
+          <span class="step-text">Цель</span>
+        </div>
+        <div class="step-line"></div>
+        <div class="step-item" data-step="3">
+          <div class="step-circle">3</div>
+          <span class="step-text">Результат</span>
+        </div>
+      </div>
+
+      <!-- STEP 1: Profile Input -->
+      <div id="step1">
+        <div class="card">
+          <h2>Ваш профиль</h2>
+          <p class="subtitle">Выберите способ заполнения профиля</p>
+
+          <div class="method-toggle">
+            <button class="method-btn active" data-method="manual" onclick="switchMethod('manual')">
+              <span class="icon">&#9998;</span>
+              Ручной ввод
+            </button>
+            <button class="method-btn" data-method="resume" onclick="switchMethod('resume')">
+              <span class="icon">&#128196;</span>
+              Вставить резюме
+            </button>
+          </div>
+
+          <!-- Manual input -->
+          <div id="manualInput">
+            <div class="field-group">
+              <label class="field-label" for="profSelect">Профессия</label>
+              <select id="profSelect" onchange="onProfessionChange()">
+                <option value="">— выберите профессию —</option>
+              </select>
+            </div>
+            <div class="field-group">
+              <label class="field-label" for="gradeSelect">Текущий грейд</label>
+              <select id="gradeSelect">
+                <option value="">— сначала выберите профессию —</option>
+              </select>
+            </div>
+            <div class="field-group">
+              <label class="field-label">Навыки и уровень (1-3)</label>
+              <ul class="skills-list" id="skillsList"></ul>
+              <div class="add-skill-row">
+                <input type="text" id="newSkillInput" placeholder="Добавить навык..." />
+                <button onclick="addCustomSkill()">+ Добавить</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Resume paste -->
+          <div id="resumeInput" class="hidden">
+            <div class="field-group">
+              <label class="field-label" for="resumeText">Текст резюме</label>
+              <textarea id="resumeText" placeholder="Вставьте текст вашего резюме сюда...&#10;&#10;Пример:&#10;Senior Product Manager&#10;Навыки: управление проектами, аналитика, SQL, Python, Figma, управление командой..." rows="8"></textarea>
+            </div>
+            <button class="btn btn-secondary" onclick="parseResume()" style="margin-bottom:16px;">Распознать резюме</button>
+            <div id="parsedResult" class="hidden">
+              <div class="parsed-skills-confirm">
+                <h4>Распознанные данные:</h4>
+                <div id="parsedProfession" style="margin-bottom:8px;"></div>
+                <div id="parsedSkillsTags"></div>
+                <p style="margin-top:12px; font-size:13px; color: var(--clr-muted);">
+                  Подтвердите распознанные навыки. Вы можете убрать лишние или добавить недостающие.
+                </p>
+                <button class="btn btn-secondary" onclick="confirmParsed()" style="margin-top:8px;">Подтвердить и настроить уровни</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="btn-row">
+          <div></div>
+          <button class="btn btn-primary" onclick="goToStep(2)" id="nextBtn1">Далее &#8594;</button>
+        </div>
+      </div>
+
+      <!-- STEP 2: Goal Selection -->
+      <div id="step2" class="hidden">
+        <div class="card">
+          <h2>Выберите цель</h2>
+          <p class="subtitle">Что вы хотите сделать?</p>
+          <div class="goal-grid">
+            <div class="goal-card" data-goal="next_grade" onclick="selectGoal('next_grade')">
+              <div class="goal-icon">&#128200;</div>
+              <div>
+                <h3>Перейти на следующий грейд</h3>
+                <p>Узнайте, каких навыков не хватает для повышения в текущей профессии, и получите план развития</p>
+              </div>
+            </div>
+            <div class="goal-card" data-goal="change_profession" onclick="selectGoal('change_profession')">
+              <div class="goal-icon">&#128256;</div>
+              <div>
+                <h3>Сменить профессию</h3>
+                <p>Оцените совместимость ваших навыков с новой профессией и узнайте, что нужно изучить</p>
+              </div>
+            </div>
+            <div class="goal-card" data-goal="explore" onclick="selectGoal('explore')">
+              <div class="goal-icon">&#128269;</div>
+              <div>
+                <h3>Изучить карьерные возможности</h3>
+                <p>Посмотрите, какие профессии вам подходят с учётом текущих навыков</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="target-prof-box" id="targetProfBox">
+            <div class="field-group" style="margin-bottom:0;">
+              <label class="field-label" for="targetProfSelect">Целевая профессия</label>
+              <select id="targetProfSelect">
+                <option value="">— выберите профессию —</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn btn-secondary" onclick="goToStep(1)">&#8592; Назад</button>
+          <button class="btn btn-primary" onclick="goToStep(3)" id="nextBtn2">Показать результат &#8594;</button>
+        </div>
+      </div>
+
+      <!-- STEP 3: Results -->
+      <div id="step3" class="hidden">
+        <div id="resultsContainer"></div>
+        <div class="btn-row">
+          <button class="btn btn-secondary" onclick="goToStep(2)">&#8592; Назад</button>
+          <button class="btn btn-primary" onclick="goToStep(1)">Начать заново</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+    // ===== DATA MODEL =====
+    const PROFESSIONS = {
+      product_manager: {
+        title: "Product Manager",
+        grades: ["Junior", "Middle", "Senior", "Lead/Head"],
+        skills: {
+          "Управление продуктом": { Junior: 1, Middle: 2, Senior: 3, "Lead/Head": 3 },
+          "Продуктовая аналитика": { Junior: 1, Middle: 2, Senior: 3, "Lead/Head": 3 },
+          "Исследования пользователей": { Junior: 1, Middle: 2, Senior: 2, "Lead/Head": 3 },
+          "Работа с метриками": { Junior: 1, Middle: 2, Senior: 3, "Lead/Head": 3 },
+          "SQL": { Junior: 1, Middle: 2, Senior: 2, "Lead/Head": 2 },
+          "A/B тестирование": { Junior: 0, Middle: 1, Senior: 2, "Lead/Head": 3 },
+          "Управление стейкхолдерами": { Junior: 1, Middle: 2, Senior: 3, "Lead/Head": 3 },
+          "Управление командой": { Junior: 0, Middle: 1, Senior: 2, "Lead/Head": 3 },
+          "Стратегическое мышление": { Junior: 0, Middle: 1, Senior: 2, "Lead/Head": 3 },
+          "Презентации и коммуникация": { Junior: 1, Middle: 2, Senior: 3, "Lead/Head": 3 }
+        },
+        resources: {
+          "Управление продуктом": {
+            tasks: ["Провести CustDev-интервью с 5 пользователями", "Написать PRD для новой фичи", "Провести приоритизацию бэклога методом RICE"],
+            communication: ["Организовать еженедельные Product Review", "Выступить с презентацией стратегии продукта перед командой"],
+            courses: ["Курс «Product Management» от Яндекс.Практикума", "Книга «Inspired» — Marty Cagan", "Тренинг «Product Discovery» от ProductStar"]
+          },
+          "Продуктовая аналитика": {
+            tasks: ["Построить дашборд с ключевыми метриками продукта", "Провести когортный анализ пользователей", "Подготовить отчёт о retention за последний квартал"],
+            communication: ["Провести сессию data review с командой", "Подготовить презентацию для стейкхолдеров на основе данных"],
+            courses: ["Курс «Аналитика для продакт-менеджеров» от Karpov.Courses", "Книга «Lean Analytics» — A. Maurya", "Тренинг по SQL для аналитики"]
+          },
+          "Исследования пользователей": {
+            tasks: ["Провести 10 пользовательских интервью", "Составить карту пользовательского пути (CJM)", "Организовать юзабилити-тестирование прототипа"],
+            communication: ["Презентовать результаты исследований команде", "Провести workshop по персонам пользователей"],
+            courses: ["Курс «UX Research» от Skillbox", "Книга «The Mom Test» — Rob Fitzpatrick", "Тренинг по Jobs To Be Done"]
+          },
+          "SQL": {
+            tasks: ["Написать запросы для анализа воронки продаж", "Создать витрину данных для регулярных отчётов", "Оптимизировать медленные запросы"],
+            communication: ["Провести мастер-класс по SQL для коллег"],
+            courses: ["Курс «SQL для анализа данных» от Stepik", "Книга «SQL Pocket Guide»", "Практика на sql-ex.ru и LeetCode"]
+          },
+          "A/B тестирование": {
+            tasks: ["Спланировать и запустить A/B тест для новой фичи", "Рассчитать статистическую значимость результатов", "Подготовить отчёт по результатам эксперимента"],
+            communication: ["Провести презентацию результатов A/B теста", "Организовать ретроспективу по результатам экспериментов"],
+            courses: ["Курс «Experiment Design» от Coursera", "Книга «Trustworthy Online Controlled Experiments»", "Тренинг по статистике для продакт-менеджеров"]
+          },
+          "Управление стейкхолдерами": {
+            tasks: ["Составить карту стейкхолдеров проекта", "Подготовить разные уровни отчётности для разных ЛПР", "Провести серию 1-1 с ключевыми стейкхолдерами"],
+            communication: ["Проводить еженедельные статусы для руководства", "Модерировать конфликтные обсуждения с участием стейкхолдеров"],
+            courses: ["Книга «Influence Without Authority» — A. Cohen", "Тренинг по переговорам и влиянию", "Курс «Stakeholder Management» от Udemy"]
+          },
+          "Управление командой": {
+            tasks: ["Провести серию 1-1 с каждым членом команды", "Составить план развития для каждого участника", "Внедрить систему OKR в команде"],
+            communication: ["Проводить ретроспективы каждые 2 недели", "Давать развивающую обратную связь в формате SBI"],
+            courses: ["Курс «Управление командой» от Яндекс.Практикума", "Книга «The Manager's Path» — Camille Fournier", "Тренинг по Agile Leadership"]
+          },
+          "Стратегическое мышление": {
+            tasks: ["Разработать продуктовую стратегию на год", "Провести SWOT/конкурентный анализ", "Подготовить Vision документ для продукта"],
+            communication: ["Провести стратегическую сессию с командой", "Защитить стратегию перед C-level руководством"],
+            courses: ["Книга «Good Strategy Bad Strategy» — R. Rumelt", "Курс «Product Strategy» от Reforge", "Тренинг «Стратегический менеджмент»"]
+          },
+          "Работа с метриками": {
+            tasks: ["Определить North Star метрику продукта", "Построить дерево метрик", "Настроить систему алертов по ключевым показателям"],
+            communication: ["Провести сессию по выбору ключевых метрик с командой", "Организовать еженедельный обзор метрик"],
+            courses: ["Курс «Product Metrics» от GoPractice", "Книга «Lean Analytics» — Alistair Croll", "Воркшоп по North Star Framework"]
+          },
+          "Презентации и коммуникация": {
+            tasks: ["Подготовить питч нового продукта на 5 минут", "Провести демо продукта для клиентов", "Подготовить квартальный отчёт в формате storytelling"],
+            communication: ["Выступить на внутреннем митапе", "Провести workshop по сторителлингу для команды"],
+            courses: ["Книга «Presentation Zen» — Garr Reynolds", "Курс «Искусство презентации» от Coursera", "Тренинг по публичным выступлениям"]
+          }
+        }
+      },
+      hr_project_manager: {
+        title: "HR Project Manager",
+        grades: ["Junior", "Middle", "Senior", "Lead/Head"],
+        skills: {
+          "Управление проектами": { Junior: 1, Middle: 2, Senior: 3, "Lead/Head": 3 },
+          "People Development": { Junior: 1, Middle: 2, Senior: 3, "Lead/Head": 3 },
+          "HR-аналитика": { Junior: 1, Middle: 2, Senior: 2, "Lead/Head": 3 },
+          "Управление командой": { Junior: 0, Middle: 1, Senior: 2, "Lead/Head": 3 },
+          "Управление стейкхолдерами": { Junior: 1, Middle: 2, Senior: 3, "Lead/Head": 3 },
+          "Оценка персонала": { Junior: 1, Middle: 2, Senior: 3, "Lead/Head": 3 },
+          "Методология обучения": { Junior: 1, Middle: 2, Senior: 2, "Lead/Head": 3 },
+          "Employer Branding": { Junior: 0, Middle: 1, Senior: 2, "Lead/Head": 3 },
+          "Excel / BI инструменты": { Junior: 1, Middle: 2, Senior: 2, "Lead/Head": 2 },
+          "Коммуникация и переговоры": { Junior: 1, Middle: 2, Senior: 3, "Lead/Head": 3 }
+        },
+        resources: {
+          "Управление проектами": {
+            tasks: ["Декомпозировать HR-проект на этапы и задачи с дедлайнами", "Внедрить Kanban-доску для HR-команды", "Провести ретроспективу прошлого проекта и зафиксировать lessons learned"],
+            communication: ["Проводить еженедельные стендапы проектной команды", "Согласовать roadmap проекта со стейкхолдерами"],
+            courses: ["Курс «Project Management Professional» от PMI", "Книга «Scrum» — Jeff Sutherland", "Тренинг по Agile в HR"]
+          },
+          "People Development": {
+            tasks: ["Создать матрицу компетенций для 3 ролей", "Запустить пилот программы наставничества", "Разработать индивидуальные планы развития для ключевых сотрудников"],
+            communication: ["Провести стратегическую сессию по развитию талантов", "Организовать встречу с руководителями для сбора потребностей в обучении"],
+            courses: ["Курс «Talent Development» от CIPD", "Книга «The Talent Code» — Daniel Coyle", "Тренинг «Коучинг для руководителей»"]
+          },
+          "HR-аналитика": {
+            tasks: ["Построить дашборд с HR-метриками (turnover, eNPS, time-to-hire)", "Провести анализ причин увольнений за квартал", "Подготовить ROI-отчёт по программе обучения"],
+            communication: ["Презентовать HR-аналитику руководству", "Провести workshop по data-driven HR для HR-команды"],
+            courses: ["Курс «People Analytics» от Coursera (Wharton)", "Книга «The Power of People» — Guenole, Ferrar, Feinzig", "Тренинг по Excel и BI для HR"]
+          },
+          "Управление командой": {
+            tasks: ["Провести серию 1-1 с каждым членом HR-команды", "Внедрить систему OKR в HR-отделе", "Составить план развития для каждого HR-специалиста"],
+            communication: ["Проводить ежемесячные командные ретроспективы", "Давать регулярную обратную связь в формате SBI"],
+            courses: ["Книга «The Manager's Path» — Camille Fournier", "Курс «Leadership in HR» от LinkedIn Learning", "Тренинг по ситуационному лидерству"]
+          },
+          "Управление стейкхолдерами": {
+            tasks: ["Составить карту стейкхолдеров HR-инициативы", "Подготовить бизнес-кейс для C-level", "Провести серию интервью с бизнес-лидерами для сбора требований"],
+            communication: ["Проводить ежемесячные отчёты для руководства", "Модерировать кросс-функциональные встречи"],
+            courses: ["Книга «Influence Without Authority»", "Тренинг по бизнес-партнёрству в HR", "Курс по переговорам от Нетологии"]
+          },
+          "Оценка персонала": {
+            tasks: ["Разработать методологию performance review", "Провести калибровочную сессию с руководителями", "Внедрить 360-градусную обратную связь для топ-менеджмента"],
+            communication: ["Обучить руководителей проведению оценочных интервью", "Презентовать результаты оценки руководству"],
+            courses: ["Курс «Performance Management» от SHRM", "Книга «Nine Lies About Work» — Marcus Buckingham", "Тренинг по ассессмент-центру"]
+          },
+          "Методология обучения": {
+            tasks: ["Разработать программу онбординга для новых сотрудников", "Создать курс с использованием модели ADDIE", "Провести пилот microlearning-формата"],
+            communication: ["Собрать обратную связь от участников обучения", "Провести фасилитационную сессию"],
+            courses: ["Курс «Instructional Design» от ATD", "Книга «Design for How People Learn» — Julie Dirksen", "Тренинг по фасилитации"]
+          },
+          "Employer Branding": {
+            tasks: ["Разработать EVP (Employee Value Proposition)", "Запустить серию публикаций о культуре компании", "Организовать участие в HR-рейтинге"],
+            communication: ["Провести workshop по ценностям компании", "Выступить на HR-конференции от лица компании"],
+            courses: ["Курс «Employer Branding» от LinkedIn Learning", "Книга «Employer Brand Management» — S. Barrow", "Тренинг по контент-маркетингу для HR"]
+          },
+          "Excel / BI инструменты": {
+            tasks: ["Создать автоматизированный отчёт по HR-метрикам в Excel", "Построить дашборд в Google Data Studio / Power BI", "Автоматизировать рутинные отчёты с помощью формул и макросов"],
+            communication: ["Провести мастер-класс по Excel для HR-команды"],
+            courses: ["Курс «Excel для HR» от Stepik", "Курс «Power BI» от Microsoft Learn", "Тренинг по автоматизации отчётности"]
+          },
+          "Коммуникация и переговоры": {
+            tasks: ["Провести сложный разговор с сотрудником по модели DESC", "Подготовить и провести презентацию HR-стратегии", "Медиировать конфликт между подразделениями"],
+            communication: ["Проводить регулярные Town Hall встречи", "Организовать серию Ask Me Anything сессий с руководством"],
+            courses: ["Книга «Crucial Conversations»", "Курс «Деловые переговоры» от Coursera", "Тренинг по медиации и разрешению конфликтов"]
+          }
+        }
+      },
+      data_analyst: {
+        title: "Data Analyst",
+        grades: ["Junior", "Middle", "Senior", "Lead"],
+        skills: {
+          "SQL": { Junior: 1, Middle: 2, Senior: 3, Lead: 3 },
+          "Python": { Junior: 1, Middle: 2, Senior: 3, Lead: 3 },
+          "Статистика": { Junior: 1, Middle: 2, Senior: 3, Lead: 3 },
+          "Визуализация данных": { Junior: 1, Middle: 2, Senior: 3, Lead: 3 },
+          "BI инструменты": { Junior: 1, Middle: 2, Senior: 2, Lead: 3 },
+          "A/B тестирование": { Junior: 0, Middle: 1, Senior: 2, Lead: 3 },
+          "ETL процессы": { Junior: 0, Middle: 1, Senior: 2, Lead: 2 },
+          "Машинное обучение": { Junior: 0, Middle: 1, Senior: 2, Lead: 2 },
+          "Презентация результатов": { Junior: 1, Middle: 2, Senior: 3, Lead: 3 },
+          "Бизнес-понимание": { Junior: 1, Middle: 2, Senior: 3, Lead: 3 }
+        },
+        resources: {
+          "SQL": {
+            tasks: ["Оптимизировать сложные запросы к хранилищу данных", "Написать оконные функции для расчёта кумулятивных метрик", "Создать витрину данных для аналитического отдела"],
+            communication: ["Провести код-ревью SQL-запросов коллег", "Документировать схему данных для команды"],
+            courses: ["Курс «Advanced SQL» от Mode Analytics", "Практика на sql-ex.ru и StrataScratch", "Книга «SQL Performance Explained»"]
+          },
+          "Python": {
+            tasks: ["Автоматизировать еженедельный отчёт с помощью pandas", "Построить pipeline обработки данных", "Написать скрипт для автоматической выгрузки данных через API"],
+            communication: ["Провести мастер-класс по pandas для команды", "Создать шаблоны Jupyter-ноутбуков для типовых задач"],
+            courses: ["Курс «Python для анализа данных» от Яндекс.Практикума", "Книга «Python for Data Analysis» — Wes McKinney", "Тренинг по автоматизации на Python"]
+          },
+          "Статистика": {
+            tasks: ["Провести статистический анализ результатов эксперимента", "Рассчитать доверительные интервалы для ключевых метрик", "Построить регрессионную модель для прогнозирования"],
+            communication: ["Провести лекцию по основам статистики для продуктовой команды", "Объяснить нетехнической аудитории результаты статистического анализа"],
+            courses: ["Курс «Statistics with Python» от Coursera (Michigan)", "Книга «Naked Statistics» — Charles Wheelan", "Курс «Статистика» от Stepik"]
+          },
+          "Визуализация данных": {
+            tasks: ["Создать интерактивный дашборд по ключевым метрикам", "Подготовить набор визуализаций для годового отчёта", "Разработать стандарт визуализации для компании"],
+            communication: ["Провести workshop по data storytelling для аналитиков", "Презентовать дашборд стейкхолдерам"],
+            courses: ["Курс «Data Visualization» от Coursera (UC Davis)", "Книга «Storytelling with Data» — Cole Nussbaumer Knaflic", "Тренинг по Tableau / Superset"]
+          },
+          "BI инструменты": {
+            tasks: ["Настроить автоматическое обновление дашбордов", "Мигрировать отчёты в новый BI-инструмент", "Создать self-service аналитику для бизнеса"],
+            communication: ["Обучить бизнес-пользователей работе с BI-инструментом"],
+            courses: ["Курс «Power BI / Tableau» от Udemy", "Книга «The Big Book of Dashboards»", "Тренинг по Looker / Superset"]
+          },
+          "A/B тестирование": {
+            tasks: ["Рассчитать необходимый размер выборки для теста", "Провести анализ результатов A/B теста с проверкой валидности", "Разработать framework для автоматизации анализа экспериментов"],
+            communication: ["Провести обучение по A/B тестированию для продактов", "Презентовать методологию тестирования стейкхолдерам"],
+            courses: ["Курс «A/B Testing» от Udacity", "Книга «Trustworthy Online Controlled Experiments»", "Курс по статистическим тестам от Karpov.Courses"]
+          },
+          "ETL процессы": {
+            tasks: ["Настроить pipeline для ежедневной загрузки данных", "Оптимизировать существующие ETL-процессы", "Внедрить мониторинг качества данных"],
+            communication: ["Документировать архитектуру данных для команды", "Согласовать SLA по данным с инженерами"],
+            courses: ["Курс «Data Engineering» от Яндекс.Практикума", "Книга «Fundamentals of Data Engineering»", "Тренинг по Apache Airflow / dbt"]
+          },
+          "Машинное обучение": {
+            tasks: ["Построить модель прогнозирования оттока", "Провести кластерный анализ клиентской базы", "Внедрить рекомендательную систему в продукт"],
+            communication: ["Объяснить бизнесу результаты ML-модели простыми словами", "Провести ревью ML-pipeline с командой"],
+            courses: ["Курс «Machine Learning» от Andrew Ng (Coursera)", "Книга «Hands-On Machine Learning» — A. Géron", "Курс «ML для аналитиков» от ODS"]
+          },
+          "Презентация результатов": {
+            tasks: ["Подготовить аналитический отчёт в формате storytelling", "Сделать dashboard с key takeaways для руководства", "Провести демо результатов исследования"],
+            communication: ["Выступить на внутреннем митапе с докладом", "Подготовить рассылку с дайджестом аналитики"],
+            courses: ["Книга «Storytelling with Data»", "Курс по презентациям от Coursera", "Тренинг по публичным выступлениям"]
+          },
+          "Бизнес-понимание": {
+            tasks: ["Провести серию встреч с бизнесом для понимания потребностей", "Составить словарь бизнес-метрик", "Разработать аналитическую стратегию для направления"],
+            communication: ["Регулярно участвовать в product-review встречах", "Проводить аналитические часы для бизнес-команд"],
+            courses: ["Книга «Lean Analytics»", "Курс по бизнес-аналитике от MBA-программ", "Тренинг по отраслевому анализу"]
+          }
+        }
+      },
+      software_engineer: {
+        title: "Software Engineer",
+        grades: ["Junior", "Middle", "Senior", "Staff/Lead"],
+        skills: {
+          "Программирование": { Junior: 1, Middle: 2, Senior: 3, "Staff/Lead": 3 },
+          "Алгоритмы и структуры данных": { Junior: 1, Middle: 2, Senior: 3, "Staff/Lead": 3 },
+          "Системный дизайн": { Junior: 0, Middle: 1, Senior: 2, "Staff/Lead": 3 },
+          "Базы данных": { Junior: 1, Middle: 2, Senior: 3, "Staff/Lead": 3 },
+          "Тестирование": { Junior: 1, Middle: 2, Senior: 3, "Staff/Lead": 3 },
+          "CI/CD и DevOps": { Junior: 0, Middle: 1, Senior: 2, "Staff/Lead": 3 },
+          "Code Review": { Junior: 1, Middle: 2, Senior: 3, "Staff/Lead": 3 },
+          "Архитектура": { Junior: 0, Middle: 1, Senior: 2, "Staff/Lead": 3 },
+          "Менторство": { Junior: 0, Middle: 1, Senior: 2, "Staff/Lead": 3 },
+          "Техническая коммуникация": { Junior: 1, Middle: 2, Senior: 3, "Staff/Lead": 3 }
+        },
+        resources: {
+          "Программирование": {
+            tasks: ["Реализовать сложную фичу с нуля", "Провести рефакторинг legacy-модуля", "Написать библиотеку для общего использования в команде"],
+            communication: ["Провести tech-talk о лучших практиках кодирования", "Менторить джуниора в ежедневном code review"],
+            courses: ["Книга «Clean Code» — Robert C. Martin", "Курс «Design Patterns» от Refactoring.Guru", "Тренинг по выбранному языку программирования"]
+          },
+          "Алгоритмы и структуры данных": {
+            tasks: ["Решать задачи на LeetCode (medium/hard) ежедневно", "Оптимизировать узкое место в производительности системы", "Реализовать кастомную структуру данных для проекта"],
+            communication: ["Провести workshop по алгоритмам для команды", "Объяснить сложность алгоритмов бизнесу простыми словами"],
+            courses: ["Курс «Algorithms» от Princeton (Coursera)", "Книга «Introduction to Algorithms» — CLRS", "Тренинг на Codeforces / LeetCode"]
+          },
+          "Системный дизайн": {
+            tasks: ["Спроектировать архитектуру нового микросервиса", "Провести Design Doc review", "Оценить масштабируемость существующей системы"],
+            communication: ["Провести Design Review сессию", "Подготовить RFC для архитектурного решения"],
+            courses: ["Книга «Designing Data-Intensive Applications» — M. Kleppmann", "Курс «System Design» от educative.io", "Тренинг по распределённым системам"]
+          },
+          "Базы данных": {
+            tasks: ["Оптимизировать схему БД для производительности", "Настроить репликацию и шардирование", "Мигрировать данные между системами"],
+            communication: ["Документировать схему БД", "Провести обучение по индексам и оптимизации запросов"],
+            courses: ["Курс «Database Systems» от CMU", "Книга «Database Internals» — Alex Petrov", "Тренинг по PostgreSQL / MongoDB"]
+          },
+          "Тестирование": {
+            tasks: ["Поднять покрытие тестами до 80%", "Написать интеграционные тесты для критичных путей", "Настроить нагрузочное тестирование"],
+            communication: ["Провести workshop по TDD", "Внедрить культуру тестирования в команде"],
+            courses: ["Книга «Test Driven Development» — Kent Beck", "Курс по тестированию от Google", "Тренинг по property-based testing"]
+          },
+          "CI/CD и DevOps": {
+            tasks: ["Настроить CI/CD pipeline с нуля", "Внедрить автоматический деплой в production", "Настроить мониторинг и алертинг"],
+            communication: ["Документировать процесс деплоя", "Обучить команду работе с инфраструктурой"],
+            courses: ["Курс «DevOps» от Яндекс.Практикума", "Книга «The Phoenix Project»", "Тренинг по Kubernetes / Docker"]
+          },
+          "Code Review": {
+            tasks: ["Проводить ежедневные code review", "Разработать чеклист для code review", "Настроить автоматические проверки в CI"],
+            communication: ["Провести workshop по эффективному code review", "Давать конструктивную обратную связь в PR"],
+            courses: ["Книга «Software Engineering at Google»", "Гайд Google по Code Review", "Тренинг по best practices ревью"]
+          },
+          "Архитектура": {
+            tasks: ["Разработать архитектуру нового сервиса", "Провести аудит текущей архитектуры", "Подготовить ADR (Architecture Decision Record)"],
+            communication: ["Провести Architecture Review", "Защитить техническое решение перед командой"],
+            courses: ["Книга «Clean Architecture» — Robert C. Martin", "Курс «Software Architecture» от Neal Ford", "Тренинг по DDD"]
+          },
+          "Менторство": {
+            tasks: ["Стать ментором для джуниор-разработчика", "Составить план онбординга для новичков", "Провести серию технических лекций"],
+            communication: ["Проводить еженедельные 1-1 с менти", "Организовать внутренний book club"],
+            courses: ["Книга «The Manager's Path» — Camille Fournier", "Курс по менторству от Pluralsight", "Тренинг по обратной связи"]
+          },
+          "Техническая коммуникация": {
+            tasks: ["Написать технический блог-пост", "Подготовить документацию к проекту", "Создать шаблоны для Design Doc"],
+            communication: ["Выступить на внутреннем tech-talk", "Провести демо для стейкхолдеров"],
+            courses: ["Книга «Docs for Developers»", "Курс по техническому письму от Google", "Тренинг по презентациям"]
+          }
+        }
+      },
+      ux_designer: {
+        title: "UX/UI Designer",
+        grades: ["Junior", "Middle", "Senior", "Lead"],
+        skills: {
+          "UX исследования": { Junior: 1, Middle: 2, Senior: 3, Lead: 3 },
+          "UI дизайн": { Junior: 1, Middle: 2, Senior: 3, Lead: 3 },
+          "Прототипирование": { Junior: 1, Middle: 2, Senior: 3, Lead: 3 },
+          "Дизайн-системы": { Junior: 0, Middle: 1, Senior: 2, Lead: 3 },
+          "Figma / Sketch": { Junior: 1, Middle: 2, Senior: 3, Lead: 3 },
+          "Юзабилити-тестирование": { Junior: 1, Middle: 2, Senior: 3, Lead: 3 },
+          "Информационная архитектура": { Junior: 0, Middle: 1, Senior: 2, Lead: 3 },
+          "Взаимодействие с разработкой": { Junior: 1, Middle: 2, Senior: 3, Lead: 3 },
+          "Презентация решений": { Junior: 1, Middle: 2, Senior: 3, Lead: 3 },
+          "Управление командой дизайна": { Junior: 0, Middle: 0, Senior: 1, Lead: 3 }
+        },
+        resources: {
+          "UX исследования": {
+            tasks: ["Провести серию глубинных интервью", "Создать карту пользовательского пути", "Провести конкурентный UX-аудит"],
+            communication: ["Презентовать результаты исследований команде", "Провести workshop по персонам"],
+            courses: ["Курс «UX Research» от Google (Coursera)", "Книга «Just Enough Research» — Erika Hall", "Тренинг по JTBD"]
+          },
+          "UI дизайн": {
+            tasks: ["Разработать UI-кит для проекта", "Создать адаптивные макеты для 3 экранов", "Провести аудит визуальной консистентности"],
+            communication: ["Провести дизайн-критику с командой", "Обосновать визуальные решения продакту"],
+            courses: ["Курс «UI Design» от Skillbox", "Книга «Refactoring UI» — Steve Schoger", "Тренинг по типографике и цвету"]
+          },
+          "Прототипирование": {
+            tasks: ["Создать интерактивный прототип ключевого флоу", "Построить high-fidelity прототип для тестирования", "Подготовить прототип для демо стейкхолдерам"],
+            communication: ["Провести walkthrough прототипа с командой", "Собрать обратную связь по прототипу"],
+            courses: ["Курс по прототипированию в Figma", "Книга «Sprint» — Jake Knapp", "Тренинг по Design Sprint"]
+          },
+          "Дизайн-системы": {
+            tasks: ["Создать базовую дизайн-систему с компонентами", "Документировать гайдлайны использования", "Мигрировать существующие экраны на дизайн-систему"],
+            communication: ["Презентовать дизайн-систему команде разработки", "Проводить регулярные синки по дизайн-системе"],
+            courses: ["Книга «Design Systems» — Alla Kholmatova", "Курс «Design Systems with Figma»", "Изучить Storybook для дизайн-систем"]
+          },
+          "Figma / Sketch": {
+            tasks: ["Настроить auto-layout и переменные в Figma", "Создать набор переиспользуемых компонентов", "Оптимизировать рабочий процесс в Figma"],
+            communication: ["Провести мастер-класс по Figma для команды", "Создать гайд по работе с файлами"],
+            courses: ["Курс «Advanced Figma» от Designcode.io", "YouTube канал Figma", "Тренинг по Figma для продвинутых"]
+          },
+          "Юзабилити-тестирование": {
+            tasks: ["Провести модерируемое юзабилити-тестирование", "Настроить немодерируемое тестирование через Maze/Useberry", "Подготовить отчёт с приоритизированными находками"],
+            communication: ["Обучить продуктовую команду основам юзабилити", "Провести совместный просмотр записей тестов"],
+            courses: ["Книга «Rocket Surgery Made Easy» — Steve Krug", "Курс «Usability Testing» от NN/g", "Тренинг по UX-метрикам"]
+          },
+          "Информационная архитектура": {
+            tasks: ["Провести card sorting с пользователями", "Разработать навигационную структуру", "Создать карту сайта / приложения"],
+            communication: ["Провести workshop по IA с командой", "Презентовать структуру стейкхолдерам"],
+            courses: ["Книга «Information Architecture» — Rosenfeld & Morville", "Курс «IA» от NN/g", "Тренинг по tree testing"]
+          },
+          "Взаимодействие с разработкой": {
+            tasks: ["Подготовить спецификацию для разработчиков", "Провести handoff в Figma с dev-mode", "Проверить реализацию на соответствие макетам"],
+            communication: ["Проводить регулярные дизайн-синки с фронтендом", "Участвовать в планировании спринтов"],
+            courses: ["Книга «Articulating Design Decisions» — Tom Greever", "Курс по CSS для дизайнеров", "Тренинг по Agile для дизайнеров"]
+          },
+          "Презентация решений": {
+            tasks: ["Подготовить кейс-стади дизайн-решения", "Провести демо нового дизайна для стейкхолдеров", "Подготовить портфолио проекта"],
+            communication: ["Проводить регулярные дизайн-ревью", "Выступить на дизайн-митапе"],
+            courses: ["Книга «Articulating Design Decisions»", "Курс по сторителлингу в дизайне", "Тренинг по публичным выступлениям"]
+          },
+          "Управление командой дизайна": {
+            tasks: ["Составить процесс дизайн-ревью для команды", "Внедрить OKR для дизайн-команды", "Провести аудит дизайн-процессов"],
+            communication: ["Проводить 1-1 с дизайнерами", "Организовать дизайн-клуб / book club"],
+            courses: ["Книга «Org Design for Design Orgs»", "Курс «Design Leadership» от NN/g", "Тренинг по менеджменту для дизайнеров"]
+          }
+        }
+      },
+      marketing_manager: {
+        title: "Marketing Manager",
+        grades: ["Junior", "Middle", "Senior", "Head"],
+        skills: {
+          "Маркетинговая стратегия": { Junior: 1, Middle: 2, Senior: 3, Head: 3 },
+          "Digital-маркетинг": { Junior: 1, Middle: 2, Senior: 3, Head: 3 },
+          "Контент-маркетинг": { Junior: 1, Middle: 2, Senior: 3, Head: 2 },
+          "Аналитика и метрики": { Junior: 1, Middle: 2, Senior: 3, Head: 3 },
+          "SEO/SEM": { Junior: 1, Middle: 2, Senior: 2, Head: 2 },
+          "SMM": { Junior: 1, Middle: 2, Senior: 2, Head: 2 },
+          "CRM и email-маркетинг": { Junior: 1, Middle: 2, Senior: 3, Head: 2 },
+          "Управление бюджетом": { Junior: 0, Middle: 1, Senior: 2, Head: 3 },
+          "Управление командой": { Junior: 0, Middle: 1, Senior: 2, Head: 3 },
+          "Бренд-менеджмент": { Junior: 0, Middle: 1, Senior: 2, Head: 3 }
+        },
+        resources: {
+          "Маркетинговая стратегия": {
+            tasks: ["Разработать маркетинговую стратегию на квартал", "Провести анализ целевой аудитории", "Создать GTM-план для нового продукта"],
+            communication: ["Защитить стратегию перед руководством", "Провести стратегическую сессию с командой"],
+            courses: ["Книга «Marketing Management» — Philip Kotler", "Курс «Marketing Strategy» от Coursera (IE)", "Тренинг по growth-маркетингу"]
+          },
+          "Digital-маркетинг": {
+            tasks: ["Настроить и оптимизировать рекламные кампании", "Провести A/B тест рекламных креативов", "Внедрить сквозную аналитику"],
+            communication: ["Провести обзор результатов кампаний", "Подготовить отчёт по digital-каналам"],
+            courses: ["Курс «Digital Marketing» от Google", "Книга «Digital Marketing» — Dave Chaffey", "Сертификация Google Ads / Facebook Blueprint"]
+          },
+          "Контент-маркетинг": {
+            tasks: ["Разработать контент-план на месяц", "Написать серию экспертных статей", "Запустить корпоративный блог / рассылку"],
+            communication: ["Координировать работу с копирайтерами", "Презентовать контент-стратегию команде"],
+            courses: ["Курс «Content Marketing» от HubSpot Academy", "Книга «They Ask, You Answer» — Marcus Sheridan", "Тренинг по сторителлингу"]
+          },
+          "Аналитика и метрики": {
+            tasks: ["Настроить отслеживание конверсий", "Построить дашборд маркетинговых метрик", "Рассчитать ROI маркетинговых кампаний"],
+            communication: ["Провести workshop по аналитике для маркетологов", "Презентовать маркетинговые метрики руководству"],
+            courses: ["Курс «Google Analytics» от Google", "Книга «Lean Analytics»", "Тренинг по attribution моделям"]
+          },
+          "SEO/SEM": {
+            tasks: ["Провести SEO-аудит сайта", "Составить семантическое ядро", "Оптимизировать страницы для поисковых систем"],
+            communication: ["Обучить контент-команду основам SEO", "Подготовить отчёт по SEO-трафику"],
+            courses: ["Курс «SEO» от Яндекс / Google", "Книга «The Art of SEO»", "Тренинг по техническому SEO"]
+          },
+          "SMM": {
+            tasks: ["Разработать стратегию присутствия в соцсетях", "Запустить вовлекающую кампанию", "Настроить таргетированную рекламу"],
+            communication: ["Провести анализ аудитории в соцсетях", "Согласовать tone of voice бренда в соцсетях"],
+            courses: ["Курс «Social Media Marketing» от Coursera", "Книга «Jab, Jab, Jab, Right Hook» — Gary Vaynerchuk", "Тренинг по Community Management"]
+          },
+          "CRM и email-маркетинг": {
+            tasks: ["Настроить цепочки автоматических писем", "Сегментировать базу клиентов", "Оптимизировать open rate и conversion rate"],
+            communication: ["Провести обзор CRM-стратегии с продажами", "Согласовать коммуникационную политику с командой"],
+            courses: ["Курс по email-маркетингу от Mailchimp", "Книга «Email Marketing Rules»", "Тренинг по CRM-системам"]
+          },
+          "Управление бюджетом": {
+            tasks: ["Составить маркетинговый бюджет на год", "Оптимизировать распределение бюджета по каналам", "Подготовить ROI-отчёт для руководства"],
+            communication: ["Защитить бюджет перед финансовым директором", "Проводить ежемесячный бюджетный ревью"],
+            courses: ["Курс по финансам для маркетологов", "Книга «Marketing Metrics»", "Тренинг по unit-экономике"]
+          },
+          "Управление командой": {
+            tasks: ["Составить план развития для каждого члена команды", "Внедрить OKR в маркетинг-команде", "Провести серию 1-1"],
+            communication: ["Проводить еженедельные синки команды", "Давать развивающую обратную связь"],
+            courses: ["Книга «The Manager's Path»", "Курс по лидерству от Coursera", "Тренинг по Agile-маркетингу"]
+          },
+          "Бренд-менеджмент": {
+            tasks: ["Разработать brand book", "Провести аудит бренда", "Запустить ребрендинг-проект"],
+            communication: ["Провести workshop по ценностям бренда", "Согласовать позиционирование с продуктовой командой"],
+            courses: ["Книга «Building Strong Brands» — David Aaker", "Курс «Brand Management» от Coursera (London Business School)", "Тренинг по brand strategy"]
+          }
+        }
+      }
+    };
+
+    const SKILL_LEVEL_NAMES = { 0: "Нет", 1: "Базовый", 2: "Уверенный", 3: "Экспертный" };
+
+    const SKILL_SYNONYMS = {
+      "product management": "Управление продуктом",
+      "управление продуктом": "Управление продуктом",
+      "project management": "Управление проектами",
+      "управление проектами": "Управление проектами",
+      "people development": "People Development",
+      "people dev": "People Development",
+      "развитие персонала": "People Development",
+      "hr аналитика": "HR-аналитика",
+      "hr-аналитика": "HR-аналитика",
+      "hr analytics": "HR-аналитика",
+      "people analytics": "HR-аналитика",
+      "продуктовая аналитика": "Продуктовая аналитика",
+      "product analytics": "Продуктовая аналитика",
+      "аналитика": "Продуктовая аналитика",
+      "analytics": "Продуктовая аналитика",
+      "sql": "SQL",
+      "python": "Python",
+      "data analysis": "Продуктовая аналитика",
+      "анализ данных": "Продуктовая аналитика",
+      "figma": "Figma / Sketch",
+      "sketch": "Figma / Sketch",
+      "a/b тестирование": "A/B тестирование",
+      "a/b testing": "A/B тестирование",
+      "ab testing": "A/B тестирование",
+      "ux research": "UX исследования",
+      "ux исследования": "UX исследования",
+      "исследования пользователей": "Исследования пользователей",
+      "user research": "Исследования пользователей",
+      "ui дизайн": "UI дизайн",
+      "ui design": "UI дизайн",
+      "управление командой": "Управление командой",
+      "team management": "Управление командой",
+      "team lead": "Управление командой",
+      "стратегическое мышление": "Стратегическое мышление",
+      "strategic thinking": "Стратегическое мышление",
+      "управление стейкхолдерами": "Управление стейкхолдерами",
+      "stakeholder management": "Управление стейкхолдерами",
+      "презентации": "Презентации и коммуникация",
+      "presentations": "Презентации и коммуникация",
+      "коммуникация": "Коммуникация и переговоры",
+      "communication": "Коммуникация и переговоры",
+      "переговоры": "Коммуникация и переговоры",
+      "negotiation": "Коммуникация и переговоры",
+      "оценка персонала": "Оценка персонала",
+      "performance review": "Оценка персонала",
+      "обучение": "Методология обучения",
+      "learning": "Методология обучения",
+      "l&d": "Методология обучения",
+      "employer branding": "Employer Branding",
+      "employer brand": "Employer Branding",
+      "hr-бренд": "Employer Branding",
+      "excel": "Excel / BI инструменты",
+      "bi": "BI инструменты",
+      "power bi": "BI инструменты",
+      "tableau": "BI инструменты",
+      "визуализация": "Визуализация данных",
+      "data visualization": "Визуализация данных",
+      "визуализация данных": "Визуализация данных",
+      "статистика": "Статистика",
+      "statistics": "Статистика",
+      "etl": "ETL процессы",
+      "машинное обучение": "Машинное обучение",
+      "machine learning": "Машинное обучение",
+      "ml": "Машинное обучение",
+      "программирование": "Программирование",
+      "programming": "Программирование",
+      "coding": "Программирование",
+      "алгоритмы": "Алгоритмы и структуры данных",
+      "algorithms": "Алгоритмы и структуры данных",
+      "системный дизайн": "Системный дизайн",
+      "system design": "Системный дизайн",
+      "базы данных": "Базы данных",
+      "databases": "Базы данных",
+      "тестирование": "Тестирование",
+      "testing": "Тестирование",
+      "qa": "Тестирование",
+      "ci/cd": "CI/CD и DevOps",
+      "devops": "CI/CD и DevOps",
+      "code review": "Code Review",
+      "ревью кода": "Code Review",
+      "архитектура": "Архитектура",
+      "architecture": "Архитектура",
+      "менторство": "Менторство",
+      "mentoring": "Менторство",
+      "маркетинг": "Маркетинговая стратегия",
+      "marketing": "Маркетинговая стратегия",
+      "digital маркетинг": "Digital-маркетинг",
+      "digital marketing": "Digital-маркетинг",
+      "контент": "Контент-маркетинг",
+      "content marketing": "Контент-маркетинг",
+      "контент-маркетинг": "Контент-маркетинг",
+      "seo": "SEO/SEM",
+      "sem": "SEO/SEM",
+      "smm": "SMM",
+      "social media": "SMM",
+      "crm": "CRM и email-маркетинг",
+      "email маркетинг": "CRM и email-маркетинг",
+      "email-маркетинг": "CRM и email-маркетинг",
+      "бюджет": "Управление бюджетом",
+      "budget": "Управление бюджетом",
+      "бренд": "Бренд-менеджмент",
+      "brand": "Бренд-менеджмент",
+      "branding": "Бренд-менеджмент",
+      "прототипирование": "Прототипирование",
+      "prototyping": "Прототипирование",
+      "дизайн-система": "Дизайн-системы",
+      "design system": "Дизайн-системы",
+      "юзабилити": "Юзабилити-тестирование",
+      "usability": "Юзабилити-тестирование",
+      "информационная архитектура": "Информационная архитектура",
+      "ia": "Информационная архитектура",
+      "работа с метриками": "Работа с метриками",
+      "metrics": "Работа с метриками",
+      "метрики": "Работа с метриками",
+      "автоматизация": "Автоматизация процессов",
+      "автоматизация процессов": "Автоматизация процессов",
+      "scrum": "Управление проектами",
+      "agile": "Управление проектами",
+      "kanban": "Управление проектами",
+      "jira": "Управление проектами",
+      "наставничество": "Менторство"
+    };
+
+    const PROFESSION_KEYWORDS = {
+      product_manager: ["product manager", "продакт менеджер", "продакт-менеджер", "продуктовый менеджер", "pm", "product owner", "продуктовый аналитик"],
+      hr_project_manager: ["hr project manager", "hr менеджер", "hr-менеджер", "people development", "people dev", "hr бизнес-партнёр", "hr bp", "hrbp", "hr manager", "people manager", "talent manager", "hr проектный менеджер"],
+      data_analyst: ["data analyst", "дата аналитик", "аналитик данных", "data scientist", "bi аналитик", "аналитик", "analyst"],
+      software_engineer: ["software engineer", "разработчик", "программист", "developer", "backend", "frontend", "fullstack", "инженер-программист", "software developer", "web developer", "веб-разработчик"],
+      ux_designer: ["ux designer", "ui designer", "ux/ui", "ui/ux", "дизайнер", "product designer", "продуктовый дизайнер", "веб-дизайнер", "web designer", "ux дизайнер", "ui дизайнер"],
+      marketing_manager: ["marketing manager", "маркетолог", "маркетинг менеджер", "digital маркетолог", "smm менеджер", "контент менеджер", "brand manager", "бренд менеджер", "growth manager"]
+    };
+
+    // ===== STATE =====
+    let currentStep = 1;
+    let inputMethod = 'manual';
+    let selectedGoal = null;
+    let userProfile = {
+      profession: null,
+      grade: null,
+      skills: {}
+    };
+
+    // ===== INIT =====
+    function init() {
+      populateProfessions();
+      populateTargetProfessions();
+    }
+
+    function populateProfessions() {
+      const sel = document.getElementById('profSelect');
+      sel.innerHTML = '<option value="">— выберите профессию —</option>';
+      for (const [key, prof] of Object.entries(PROFESSIONS)) {
+        const opt = document.createElement('option');
+        opt.value = key;
+        opt.textContent = prof.title;
+        sel.appendChild(opt);
+      }
+    }
+
+    function populateTargetProfessions() {
+      const sel = document.getElementById('targetProfSelect');
+      sel.innerHTML = '<option value="">— выберите профессию —</option>';
+      for (const [key, prof] of Object.entries(PROFESSIONS)) {
+        const opt = document.createElement('option');
+        opt.value = key;
+        opt.textContent = prof.title;
+        sel.appendChild(opt);
+      }
+    }
+
+    function onProfessionChange() {
+      const profKey = document.getElementById('profSelect').value;
+      const gradeSel = document.getElementById('gradeSelect');
+      const skillsList = document.getElementById('skillsList');
+
+      if (!profKey) {
+        gradeSel.innerHTML = '<option value="">— сначала выберите профессию —</option>';
+        skillsList.innerHTML = '';
+        return;
+      }
+
+      const prof = PROFESSIONS[profKey];
+
+      gradeSel.innerHTML = '<option value="">— выберите грейд —</option>';
+      prof.grades.forEach(g => {
+        const opt = document.createElement('option');
+        opt.value = g;
+        opt.textContent = g;
+        gradeSel.appendChild(opt);
+      });
+
+      userProfile.skills = {};
+      Object.keys(prof.skills).forEach(skill => {
+        userProfile.skills[skill] = 0;
+      });
+      renderSkillsList();
+    }
+
+    function renderSkillsList() {
+      const list = document.getElementById('skillsList');
+      list.innerHTML = '';
+      for (const [skill, level] of Object.entries(userProfile.skills)) {
+        const li = document.createElement('li');
+        li.className = 'skill-row';
+        li.innerHTML = `
+          <span class="skill-name">${skill}</span>
+          <div class="skill-level-btns">
+            ${[1, 2, 3].map(l => `
+              <button class="${level === l ? 'active' : ''}" onclick="setSkillLevel('${skill.replace(/'/g, "\\'")}', ${l})">${l}</button>
+            `).join('')}
+          </div>
+          <button class="skill-remove" onclick="removeSkill('${skill.replace(/'/g, "\\'")}')" title="Удалить">&times;</button>
+        `;
+        list.appendChild(li);
+      }
+    }
+
+    function setSkillLevel(skill, level) {
+      if (userProfile.skills[skill] === level) {
+        userProfile.skills[skill] = 0;
+      } else {
+        userProfile.skills[skill] = level;
+      }
+      renderSkillsList();
+    }
+
+    function removeSkill(skill) {
+      delete userProfile.skills[skill];
+      renderSkillsList();
+    }
+
+    function addCustomSkill() {
+      const input = document.getElementById('newSkillInput');
+      const name = input.value.trim();
+      if (!name) return;
+      if (userProfile.skills.hasOwnProperty(name)) {
+        input.value = '';
+        return;
+      }
+      userProfile.skills[name] = 0;
+      renderSkillsList();
+      input.value = '';
+    }
+
+    // ===== INPUT METHOD SWITCH =====
+    function switchMethod(method) {
+      inputMethod = method;
+      document.querySelectorAll('.method-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.method === method);
+      });
+      document.getElementById('manualInput').classList.toggle('hidden', method !== 'manual');
+      document.getElementById('resumeInput').classList.toggle('hidden', method !== 'resume');
+    }
+
+    // ===== RESUME PARSING =====
+    function parseResume() {
+      const text = document.getElementById('resumeText').value.trim();
+      if (!text) return;
+
+      const lower = text.toLowerCase();
+
+      let detectedProf = null;
+      let maxScore = 0;
+      for (const [profKey, keywords] of Object.entries(PROFESSION_KEYWORDS)) {
+        for (const kw of keywords) {
+          if (lower.includes(kw) && kw.length > maxScore) {
+            detectedProf = profKey;
+            maxScore = kw.length;
+          }
+        }
+      }
+
+      const detectedSkills = [];
+      const seen = new Set();
+      for (const [keyword, canonical] of Object.entries(SKILL_SYNONYMS)) {
+        if (lower.includes(keyword) && !seen.has(canonical)) {
+          seen.add(canonical);
+          detectedSkills.push(canonical);
+        }
+      }
+
+      const words = lower.split(/[\s,;.!?\-—–:()]+/).filter(w => w.length > 3);
+      for (const profKey of Object.keys(PROFESSIONS)) {
+        const profSkills = Object.keys(PROFESSIONS[profKey].skills);
+        for (const skill of profSkills) {
+          if (!seen.has(skill) && lower.includes(skill.toLowerCase())) {
+            seen.add(skill);
+            detectedSkills.push(skill);
+          }
+        }
+      }
+
+      const profDiv = document.getElementById('parsedProfession');
+      if (detectedProf) {
+        profDiv.innerHTML = `<strong>Профессия:</strong> <span class="tag">${PROFESSIONS[detectedProf].title}</span>`;
+      } else {
+        profDiv.innerHTML = `<strong>Профессия:</strong> <em style="color:var(--clr-muted)">не удалось определить — выберите вручную</em>`;
+      }
+
+      const tagsDiv = document.getElementById('parsedSkillsTags');
+      if (detectedSkills.length > 0) {
+        tagsDiv.innerHTML = `<strong>Навыки:</strong><br/>` +
+          detectedSkills.map(s => `<span class="tag">${s}</span>`).join(' ');
+      } else {
+        tagsDiv.innerHTML = `<strong>Навыки:</strong> <em style="color:var(--clr-muted)">не удалось распознать — добавьте вручную</em>`;
+      }
+
+      document.getElementById('parsedResult').classList.remove('hidden');
+      window._parsedProf = detectedProf;
+      window._parsedSkills = detectedSkills;
+    }
+
+    function confirmParsed() {
+      const profKey = window._parsedProf;
+      const skills = window._parsedSkills || [];
+
+      if (profKey) {
+        document.getElementById('profSelect').value = profKey;
+        onProfessionChange();
+      }
+
+      if (skills.length > 0) {
+        const existing = { ...userProfile.skills };
+        skills.forEach(s => {
+          if (!existing.hasOwnProperty(s)) {
+            existing[s] = 1;
+          }
+        });
+        userProfile.skills = existing;
+        renderSkillsList();
+      }
+
+      switchMethod('manual');
+      document.getElementById('parsedResult').classList.add('hidden');
+    }
+
+    // ===== GOAL SELECTION =====
+    function selectGoal(goal) {
+      selectedGoal = goal;
+      document.querySelectorAll('.goal-card').forEach(c => {
+        c.classList.toggle('selected', c.dataset.goal === goal);
+      });
+      const targetBox = document.getElementById('targetProfBox');
+      targetBox.classList.toggle('visible', goal === 'change_profession');
+    }
+
+    // ===== NAVIGATION =====
+    function goToStep(step) {
+      if (step === 2) {
+        const profKey = document.getElementById('profSelect').value;
+        const grade = document.getElementById('gradeSelect').value;
+        if (!profKey) {
+          alert('Пожалуйста, выберите профессию');
+          return;
+        }
+        if (!grade) {
+          alert('Пожалуйста, выберите текущий грейд');
+          return;
+        }
+        userProfile.profession = profKey;
+        userProfile.grade = grade;
+
+        const hasSkills = Object.values(userProfile.skills).some(v => v > 0);
+        if (!hasSkills) {
+          alert('Пожалуйста, укажите уровень хотя бы для одного навыка');
+          return;
+        }
+      }
+
+      if (step === 3) {
+        if (!selectedGoal) {
+          alert('Пожалуйста, выберите цель');
+          return;
+        }
+        if (selectedGoal === 'change_profession') {
+          const target = document.getElementById('targetProfSelect').value;
+          if (!target) {
+            alert('Пожалуйста, выберите целевую профессию');
+            return;
+          }
+          if (target === userProfile.profession) {
+            alert('Целевая профессия должна отличаться от текущей');
+            return;
+          }
+        }
+        generateResults();
+      }
+
+      if (step === 1) {
+        selectedGoal = null;
+        document.querySelectorAll('.goal-card').forEach(c => c.classList.remove('selected'));
+        document.getElementById('targetProfBox').classList.remove('visible');
+      }
+
+      currentStep = step;
+      updateStepper();
+      document.getElementById('step1').classList.toggle('hidden', step !== 1);
+      document.getElementById('step2').classList.toggle('hidden', step !== 2);
+      document.getElementById('step3').classList.toggle('hidden', step !== 3);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function updateStepper() {
+      document.querySelectorAll('.step-item').forEach(item => {
+        const s = parseInt(item.dataset.step);
+        item.classList.remove('active', 'done');
+        if (s === currentStep) item.classList.add('active');
+        if (s < currentStep) item.classList.add('done');
+      });
+      document.querySelectorAll('.step-line').forEach((line, idx) => {
+        line.classList.toggle('done', idx + 1 < currentStep);
+      });
+    }
+
+    // ===== RESULTS GENERATION =====
+    function generateResults() {
+      const container = document.getElementById('resultsContainer');
+
+      if (selectedGoal === 'next_grade') {
+        container.innerHTML = generateNextGradeResults();
+      } else if (selectedGoal === 'change_profession') {
+        container.innerHTML = generateChangeProfessionResults();
+      } else if (selectedGoal === 'explore') {
+        container.innerHTML = generateExploreResults();
+      }
+    }
+
+    function calculateMatch(userSkills, targetSkills) {
+      let totalWeight = 0;
+      let matchScore = 0;
+      let details = [];
+
+      for (const [skill, requiredLevel] of Object.entries(targetSkills)) {
+        if (requiredLevel === 0) continue;
+        const userLevel = userSkills[skill] || 0;
+        const weight = requiredLevel;
+        totalWeight += weight;
+
+        let skillScore;
+        if (userLevel >= requiredLevel) {
+          skillScore = weight;
+        } else if (userLevel > 0) {
+          skillScore = weight * (userLevel / requiredLevel);
+        } else {
+          skillScore = 0;
+        }
+        matchScore += skillScore;
+
+        let gap;
+        if (userLevel >= requiredLevel) gap = 'ok';
+        else if (userLevel > 0) gap = 'partial';
+        else gap = 'missing';
+
+        details.push({ skill, userLevel, requiredLevel, gap });
+      }
+
+      const percentage = totalWeight > 0 ? Math.round((matchScore / totalWeight) * 100) : 0;
+      return { percentage, details };
+    }
+
+    function generateNextGradeResults() {
+      const prof = PROFESSIONS[userProfile.profession];
+      const currentGradeIdx = prof.grades.indexOf(userProfile.grade);
+
+      if (currentGradeIdx >= prof.grades.length - 1) {
+        return `
+          <div class="card">
+            <h2>Вы уже на максимальном грейде!</h2>
+            <p class="subtitle">Вы находитесь на уровне ${userProfile.grade} — это максимальный грейд для ${prof.title}. Рассмотрите возможность смены профессии или изучения карьерных возможностей.</p>
+          </div>
+        `;
+      }
+
+      const nextGrade = prof.grades[currentGradeIdx + 1];
+      const targetSkills = {};
+      for (const [skill, levels] of Object.entries(prof.skills)) {
+        targetSkills[skill] = levels[nextGrade] || 0;
+      }
+
+      const { percentage, details } = calculateMatch(userProfile.skills, targetSkills);
+
+      let html = `
+        <div class="card">
+          <h2>${prof.title}: ${userProfile.grade} &#8594; ${nextGrade}</h2>
+          <p class="subtitle">Анализ готовности к переходу на следующий грейд</p>
+          ${renderMatchMeter(percentage)}
+          ${renderComparisonTable(details)}
+        </div>
+        ${renderDevelopmentPlan(details, prof)}
+      `;
+      return html;
+    }
+
+    function generateChangeProfessionResults() {
+      const targetProfKey = document.getElementById('targetProfSelect').value;
+      const targetProf = PROFESSIONS[targetProfKey];
+      const currentProf = PROFESSIONS[userProfile.profession];
+
+      const targetSkills = {};
+      const firstGrade = targetProf.grades[0];
+
+      for (const [skill, levels] of Object.entries(targetProf.skills)) {
+        const midGrade = targetProf.grades[1] || firstGrade;
+        targetSkills[skill] = levels[midGrade] || levels[firstGrade] || 1;
+      }
+
+      const adjustedUserSkills = {};
+      for (const [skill, level] of Object.entries(userProfile.skills)) {
+        if (targetSkills.hasOwnProperty(skill)) {
+          adjustedUserSkills[skill] = level;
+        } else {
+          const normalizedSkill = Object.keys(targetSkills).find(ts =>
+            ts.toLowerCase() === skill.toLowerCase()
+          );
+          if (normalizedSkill) {
+            adjustedUserSkills[normalizedSkill] = level;
+          }
+        }
+      }
+
+      const detailsForCalc = {};
+      for (const [skill, requiredLevel] of Object.entries(targetSkills)) {
+        detailsForCalc[skill] = adjustedUserSkills[skill] || 0;
+      }
+
+      const { percentage, details } = calculateMatch(detailsForCalc, targetSkills);
+
+      const enhancedDetails = details.map(d => ({
+        ...d,
+        note: d.userLevel > 0 ? 'Текущий уровень сохраняется' : 'Новый навык (начальный уровень)'
+      }));
+
+      let html = `
+        <div class="card">
+          <h2>${currentProf.title} &#8594; ${targetProf.title}</h2>
+          <p class="subtitle">Анализ совместимости ваших навыков с новой профессией</p>
+          ${renderMatchMeter(percentage)}
+          ${renderComparisonTable(enhancedDetails)}
+        </div>
+        ${renderDevelopmentPlan(enhancedDetails, targetProf)}
+      `;
+      return html;
+    }
+
+    function generateExploreResults() {
+      const currentProf = PROFESSIONS[userProfile.profession];
+      const results = [];
+
+      for (const [profKey, prof] of Object.entries(PROFESSIONS)) {
+        const midGrade = prof.grades[1] || prof.grades[0];
+        const targetSkills = {};
+        for (const [skill, levels] of Object.entries(prof.skills)) {
+          targetSkills[skill] = levels[midGrade] || 1;
+        }
+
+        const adjustedUserSkills = {};
+        for (const [skill, level] of Object.entries(userProfile.skills)) {
+          if (targetSkills.hasOwnProperty(skill)) {
+            adjustedUserSkills[skill] = level;
+          }
+        }
+
+        const { percentage, details } = calculateMatch(adjustedUserSkills, targetSkills);
+        const matchingSkills = details.filter(d => d.gap === 'ok' || d.gap === 'partial');
+        const missingSkills = details.filter(d => d.gap === 'missing');
+
+        results.push({
+          key: profKey,
+          title: prof.title,
+          percentage,
+          matchingSkills,
+          missingSkills,
+          isCurrent: profKey === userProfile.profession
+        });
+      }
+
+      results.sort((a, b) => b.percentage - a.percentage);
+
+      let html = `
+        <div class="card">
+          <h2>Карьерные возможности</h2>
+          <p class="subtitle">Оценка совместимости ваших навыков с разными профессиями (уровень Middle)</p>
+          <div class="career-paths-grid">
+            ${results.map(r => `
+              <div class="career-path-card" onclick="showExploreDetail('${r.key}')" style="${r.isCurrent ? 'border-color: var(--clr-accent); background: var(--clr-accent-bg);' : ''}">
+                <div class="match-pct">${r.percentage}%</div>
+                <h4>${r.title} ${r.isCurrent ? '(текущая)' : ''}</h4>
+                <div class="match-note">
+                  Совпадает: ${r.matchingSkills.length} навык(ов)<br/>
+                  Не хватает: ${r.missingSkills.length} навык(ов)
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+        <div id="exploreDetail"></div>
+      `;
+      return html;
+    }
+
+    function showExploreDetail(profKey) {
+      const prof = PROFESSIONS[profKey];
+      const midGrade = prof.grades[1] || prof.grades[0];
+      const targetSkills = {};
+      for (const [skill, levels] of Object.entries(prof.skills)) {
+        targetSkills[skill] = levels[midGrade] || 1;
+      }
+
+      const adjustedUserSkills = {};
+      for (const [skill, level] of Object.entries(userProfile.skills)) {
+        if (targetSkills.hasOwnProperty(skill)) {
+          adjustedUserSkills[skill] = level;
+        }
+      }
+
+      const { percentage, details } = calculateMatch(adjustedUserSkills, targetSkills);
+
+      const detail = document.getElementById('exploreDetail');
+      detail.innerHTML = `
+        <div class="card">
+          <h2>${prof.title} — подробнее</h2>
+          <p class="subtitle">Уровень Middle: детальное сравнение навыков</p>
+          ${renderMatchMeter(percentage)}
+          ${renderComparisonTable(details)}
+        </div>
+        ${renderDevelopmentPlan(details, prof)}
+      `;
+      detail.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // ===== RENDER HELPERS =====
+    function renderMatchMeter(percentage) {
+      let cls = 'low';
+      if (percentage >= 70) cls = 'high';
+      else if (percentage >= 40) cls = 'mid';
+
+      return `
+        <div class="match-meter">
+          <div class="match-circle ${cls}">${percentage}%</div>
+          <div class="match-label">Совпадение навыков и уровней</div>
+        </div>
+      `;
+    }
+
+    function renderComparisonTable(details) {
+      const sorted = [...details].sort((a, b) => {
+        const order = { missing: 0, partial: 1, ok: 2 };
+        return order[a.gap] - order[b.gap];
+      });
+
+      return `
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Навык</th>
+              <th>Ваш уровень</th>
+              <th>Требуется</th>
+              <th>Статус</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${sorted.map(d => `
+              <tr>
+                <td>${d.skill}</td>
+                <td><span class="lvl-badge lvl-${d.userLevel}">${SKILL_LEVEL_NAMES[d.userLevel]}</span></td>
+                <td><span class="lvl-badge lvl-${d.requiredLevel}">${SKILL_LEVEL_NAMES[d.requiredLevel]}</span></td>
+                <td>
+                  <span class="gap-tag gap-${d.gap}">
+                    ${d.gap === 'ok' ? 'Соответствует' : d.gap === 'partial' ? 'Развить' : 'Изучить'}
+                  </span>
+                </td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      `;
+    }
+
+    function renderDevelopmentPlan(details, prof) {
+      const gaps = details.filter(d => d.gap !== 'ok');
+      if (gaps.length === 0) {
+        return `
+          <div class="card">
+            <h2>План развития</h2>
+            <p class="subtitle">Ваш профиль полностью соответствует требованиям. Продолжайте совершенствоваться!</p>
+          </div>
+        `;
+      }
+
+      const resources = prof.resources || {};
+
+      let tasksHtml = '';
+      let communicationHtml = '';
+      let coursesHtml = '';
+
+      gaps.forEach(g => {
+        const res = resources[g.skill];
+        if (!res) return;
+
+        if (res.tasks && res.tasks.length > 0) {
+          tasksHtml += `
+            <div class="plan-item">
+              <strong>${g.skill}</strong> (${SKILL_LEVEL_NAMES[g.userLevel]} &#8594; ${SKILL_LEVEL_NAMES[g.requiredLevel]})
+              <p>${res.tasks.slice(0, 2).join('; ')}</p>
+            </div>
+          `;
+        }
+
+        if (res.communication && res.communication.length > 0) {
+          communicationHtml += `
+            <div class="plan-item">
+              <strong>${g.skill}</strong>
+              <p>${res.communication.slice(0, 2).join('; ')}</p>
+            </div>
+          `;
+        }
+
+        if (res.courses && res.courses.length > 0) {
+          coursesHtml += `
+            <div class="plan-item">
+              <strong>${g.skill}</strong>
+              <p>${res.courses.slice(0, 2).join('; ')}</p>
+            </div>
+          `;
+        }
+      });
+
+      const gapsWithoutResources = gaps.filter(g => !resources[g.skill]);
+      if (gapsWithoutResources.length > 0) {
+        gapsWithoutResources.forEach(g => {
+          tasksHtml += `
+            <div class="plan-item">
+              <strong>${g.skill}</strong> (${SKILL_LEVEL_NAMES[g.userLevel]} &#8594; ${SKILL_LEVEL_NAMES[g.requiredLevel]})
+              <p>Найдите практические задачи для развития этого навыка в текущих рабочих проектах</p>
+            </div>
+          `;
+          coursesHtml += `
+            <div class="plan-item">
+              <strong>${g.skill}</strong>
+              <p>Поищите курсы и книги по теме «${g.skill}» на Coursera, Stepik или Яндекс.Практикуме</p>
+            </div>
+          `;
+        });
+      }
+
+      return `
+        <div class="card plan-section">
+          <h2>План развития</h2>
+          <p class="subtitle">Рекомендации по развитию навыков, которых не хватает</p>
+
+          ${tasksHtml ? `
+            <h3><span class="plan-icon">&#128736;</span> В рамках реальных задач</h3>
+            ${tasksHtml}
+          ` : ''}
+
+          ${communicationHtml ? `
+            <h3 style="margin-top:20px;"><span class="plan-icon">&#128172;</span> В общении</h3>
+            ${communicationHtml}
+          ` : ''}
+
+          ${coursesHtml ? `
+            <h3 style="margin-top:20px;"><span class="plan-icon">&#128218;</span> Курсы, книги, тренинги</h3>
+            ${coursesHtml}
+          ` : ''}
+        </div>
+      `;
+    }
+
+    // ===== INIT =====
+    init();
+    </script>
+  </body>
+</html>
